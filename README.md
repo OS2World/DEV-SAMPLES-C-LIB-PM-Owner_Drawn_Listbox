@@ -7,7 +7,8 @@ LICENSE
 
 COMPILE TOOLS
 ===============
-* 
+* gcc
+* wrc
  
 AUTHORS
 ===============
