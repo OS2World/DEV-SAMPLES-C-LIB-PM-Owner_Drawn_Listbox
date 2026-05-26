@@ -23,7 +23,7 @@
 
 #include <os2.h>
 #include <string.h>
-#include <owndraw.h>
+#include "owndraw.h"
 
 /*********************************************************************
  *  ODInitLBWidthHeight
@@ -198,7 +198,7 @@ MRESULT EXPENTRY ODDrawLBItems(POWNERITEM pOwnerItem,
         sNumberOfChars=0xFFFF;
       pOwnerItem->rclItem.xLeft += (LONG)sPrevCharPos*lCharWidth;
       WinDrawText(pOwnerItem->hps,sNumberOfChars,
-        &cTempString[sPrevCharPos-1],&pOwnerItem->rclItem,
+        (PCCH) &cTempString[sPrevCharPos-1],&pOwnerItem->rclItem,
         0,0,DT_LEFT|DT_VCENTER|DT_ERASERECT|DT_TEXTATTRS);
       }
     while (psTabStops[sTab] > 0);
@@ -210,7 +210,7 @@ MRESULT EXPENTRY ODDrawLBItems(POWNERITEM pOwnerItem,
       pOwnerItem->fsStateOld=FALSE;
     }
 
-  //  Return to the calling program indicating that the text has 
+  //  Return to the calling program indicating that the text has
   //  been drawn
 
   return((MRESULT) TRUE);
