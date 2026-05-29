@@ -3,7 +3,7 @@ Owner Drawn Listbox functions. Contains  functions which will allow listboxes to
 
 LICENSE
 ===============
-* GNU GPL V2
+* BSD 3-Clauses
 
 COMPILE TOOLS
 ===============
