@@ -1,0 +1,36 @@
+# makefile-ow -- Build owndraw.dll with OpenWatcom 2.0 for OS/2
+#
+# Usage:
+#   wmake -f makefile-ow          build owndraw.dll and owndraw.lib
+#   wmake -f makefile-ow clean    remove build artifacts
+#
+# Requires:
+#   OpenWatcom 2.0 (wcc386, wlink) on the PATH
+#
+# Outputs: bin-ow\owndraw.dll  bin-ow\owndraw.lib
+#
+# Notes:
+#   -bd     : generate DLL code (exported functions, _DLL_InitTerm)
+#   -Ot     : optimize for speed (-O2 is not accepted by this wcc386 build)
+#   -bt=os2 : target OS/2
+#   wlink is driven via src\owndraw-ow.lnk (wlink does not accept a 'def'
+#   directive on the command line; exports and description live in the .lnk)
+
+SRC = src
+OUT = bin-ow
+
+all : $(OUT)\owndraw.dll .SYMBOLIC
+
+# Compile
+$(OUT)\owndraw.obj : $(SRC)\owndraw.c $(SRC)\owndraw.h
+	wcc386 $(SRC)\owndraw.c -I=$(SRC) -bt=os2 -bd -zq -Ot -w3 -fo=$(OUT)\owndraw.obj
+
+# Link DLL and generate import library via response file
+$(OUT)\owndraw.dll : $(OUT)\owndraw.obj $(SRC)\owndraw-ow.lnk
+	wlink @$(SRC)\owndraw-ow.lnk
+
+clean : .SYMBOLIC
+	-del $(OUT)\owndraw.dll 2>nul
+	-del $(OUT)\owndraw.lib 2>nul
+	-del $(OUT)\owndraw.obj 2>nul
+	-del $(OUT)\owndraw.map 2>nul

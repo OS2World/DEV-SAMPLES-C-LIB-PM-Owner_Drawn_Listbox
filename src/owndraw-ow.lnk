@@ -1,0 +1,8 @@
+SYSTEM os2v2_dll INITINSTANCE TERMINSTANCE
+NAME bin-ow/owndraw.dll
+FILE bin-ow/owndraw.obj
+EXPORT ODInitLBWidthHeight
+EXPORT ODDrawLBItems
+OPTION DESCRIPTION '@#OS2World:1.1#@##1## 2026-07-24     ARCAOS-507::::::@@Owner Drawn Listbox - proportional font column-aligned listbox library'
+OPTION IMPLIB=bin-ow/owndraw.lib
+OPTION QUIET

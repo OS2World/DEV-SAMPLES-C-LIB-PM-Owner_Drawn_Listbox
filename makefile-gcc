@@ -1,0 +1,34 @@
+# makefile-gcc -- Build owndraw.dll with GCC 9.2 (bitwiseworks) for OS/2
+#
+# Usage:
+#   make -f makefile-gcc          build owndraw.dll and owndraw.lib
+#   make -f makefile-gcc clean    remove build artifacts
+#
+# Requires:
+#   GCC 9.2 (bitwiseworks) on the PATH
+#   emximp (EMX import library generator)
+#   EMXOMFLD_TYPE=WLINK and EMXOMFLD_LINKER=wl.exe  (set by compile-gcc.cmd)
+#
+# Outputs: bin-gcc/owndraw.dll  bin-gcc/owndraw.lib
+
+SRC = src
+OUT = bin-gcc
+
+.PHONY: all clean
+
+all: $(OUT)/owndraw.dll $(OUT)/owndraw.lib
+
+# Compile
+$(OUT)/owndraw.obj: $(SRC)/owndraw.c $(SRC)/owndraw.h
+	gcc -Wall -Wno-pointer-sign -Zomf -c -O2 -I$(SRC) -o $(OUT)/owndraw.obj $(SRC)/owndraw.c
+
+# Link DLL
+$(OUT)/owndraw.dll: $(OUT)/owndraw.obj $(SRC)/owndraw.def
+	gcc -Zomf -Zdll -o $(OUT)/owndraw.dll $(OUT)/owndraw.obj $(SRC)/owndraw.def
+
+# Generate import library from the DEF file
+$(OUT)/owndraw.lib: $(SRC)/owndraw.def
+	emximp -o $(OUT)/owndraw.lib $(SRC)/owndraw.def
+
+clean:
+	rm -f $(OUT)/owndraw.dll $(OUT)/owndraw.lib $(OUT)/owndraw.obj $(OUT)/owndraw.map
